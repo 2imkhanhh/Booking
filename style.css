@@ -1,0 +1,407 @@
+/* =========================================
+   CẤU HÌNH BIẾN MÀU (CSS VARIABLES)
+   ========================================= */
+:root {
+    --bg-section: #65432A;
+    /* Màu nền to (Background) */
+    --bg-card: #F7F4EF;
+    /* Màu nền thẻ (Card) */
+    --primary: #5E4032;
+    /* Màu chủ đạo (Icon, Hover, Active Step) */
+    --text-dark: #1A1A1A;
+    /* Màu chữ đậm / Nút bấm */
+    --bg-input: #F2EFE9;
+    /* Màu nền input */
+    --border-color: #8C8C8C;
+    /* Màu viền */
+}
+
+body {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    margin: 0;
+}
+
+/* TOOL CHỈNH MÀU (Nổi bên góc trái) */
+.color-editor-panel {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    width: 220px;
+    font-family: sans-serif;
+}
+
+.color-editor-panel h4 {
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.color-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+.color-group input[type="color"] {
+    border: none;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    background: none;
+}
+
+/* MAIN STYLES */
+.reservation-section {
+    background-color: var(--bg-section);
+    padding: 100px 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    transition: background-color 0.3s;
+}
+
+.reservation-card {
+    background-color: var(--bg-card);
+    border-radius: 15px;
+    padding: 60px 80px;
+    position: relative;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    width: 100%;
+}
+
+.reservation-title {
+    font-family: 'Cinzel', serif;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+    color: #000;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+.card-decor {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    z-index: 2;
+}
+
+.decor-left {
+    left: -20px;
+}
+
+.decor-right {
+    right: -20px;
+}
+
+.card-decor img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.2));
+}
+
+.booking-group-wrapper {
+    background-color: transparent !important;
+    border: none !important;
+    margin-bottom: 15px; /* Khoảng cách giữa hàng trên và hàng dưới */
+}
+
+/* 2. Tạo khoảng cách giữa 2 ô input nằm ngang (Flex gap) */
+.booking-group-wrapper .d-flex {
+    gap: 15px; /* Khoảng cách tách nhau ra là 15px */
+}
+
+/* 3. Style lại cho từng ô input riêng lẻ */
+.booking-item {
+    background-color: var(--bg-input); /* Màu nền cho từng ô */
+    border: 1px solid var(--border-color); /* Viền cho từng ô */
+    border-radius: 12px; /* Bo tròn góc cho mềm mại */
+    /* Thêm bóng nhẹ để ô nổi lên (tùy chọn) */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03); 
+}
+
+.booking-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    transition: background-color 0.2s;
+    height: 60px;
+}
+
+.booking-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+#step1-container .booking-group-wrapper {
+    max-width: 400px;  /* Độ rộng tối đa (bạn có thể chỉnh 400px hoặc 600px tùy ý) */
+    margin-left: auto; /* Căn giữa trái */
+    margin-right: auto;/* Căn giữa phải */
+}
+
+/* 2. Chỉnh nút NEXT STEP */
+#step1-container .btn-check-availability {
+    max-width: 400px !important; /* Bắt buộc nút bằng độ rộng với ô ở trên */
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%; /* Đảm bảo nút rộng hết cỡ trong phạm vi 500px */
+}
+
+.booking-icon {
+    position: absolute;
+    left: 25px;
+    color: var(--text-dark);
+    font-size: 18px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.booking-input-reset {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    outline: none;
+    box-sizing: border-box;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    padding-left: 60px;
+    padding-right: 20px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+select.booking-input-reset {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235E4032' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 25px center;
+    background-size: 16px;
+}
+
+.btn-check-availability {
+    display: block;
+    width: 100%;
+    background-color: var(--text-dark);
+    color: #fff;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 15px;
+    border: none;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.btn-check-availability:hover {
+    background-color: var(--primary);
+}
+
+.available-times-container {
+    margin-top: 10px;
+    display: flex;       /* Dùng Flex thay vì Grid để đúng logic JS cũ */
+    flex-wrap: wrap;     /* Cho phép xuống dòng nếu màn hình nhỏ */
+    gap: 10px;           /* Khoảng cách giữa các nút */
+    justify-content: space-between;
+}
+
+.time-slot-btn {
+    flex: 1 1 calc(20% - 10px); 
+    
+    background-color: #1A1A1A; /* Giữ màu đen đẹp như bạn thích */
+    color: #fff;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px 0; /* Padding trên dưới */
+    border: none;
+    border-radius: 4px;
+    transition: all 0.3s;
+    cursor: pointer;
+    text-align: center;
+    min-width: 70px; /* Đảm bảo nút không bị bé quá trên mobile */
+}
+
+.time-slot-btn:hover {
+    background-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.flatpickr-calendar {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    border: 1px solid var(--border-color);
+    z-index: 99999 !important;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected.inRange,
+.flatpickr-day.selected:focus,
+.flatpickr-day.selected:hover {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: #fff;
+}
+
+.flatpickr-month .flatpickr-prev-month:hover svg,
+.flatpickr-month .flatpickr-next-month:hover svg {
+    fill: var(--primary) !important;
+}
+
+.steps-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    margin-bottom: 30px;
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    color: #999;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.step-circle {
+    width: 28px;
+    height: 28px;
+    background-color: transparent;
+    border: 1px solid #999;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+.step-item.active {
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+.step-item.active .step-circle {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.form-control-step2 {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    color: #333;
+    font-size: 15px;
+    outline: none;
+    transition: 0.3s;
+    margin-bottom: 10px;
+}
+
+.custom-checkbox-input {
+    display: none;
+}
+
+.custom-checkbox-icon {
+    font-size: 16px;
+    color: var(--border-color);
+    margin-right: 8px;
+    min-width: 16px;
+    transition: all 0.2s;
+}
+
+.custom-checkbox-input:checked+label .custom-checkbox-icon::before {
+    content: "\f058";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: var(--primary);
+}
+
+.custom-checkbox-input:checked+label .custom-checkbox-icon {
+    color: var(--primary);
+}
+
+.form-control-step2:focus {
+    background-color: #fff;
+    border-color: var(--primary);
+}
+
+.back-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-block;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease, text-decoration 0.3s;
+    transform-origin: left center;
+}
+
+.back-link:hover {
+    transform: scale(1.1);
+}
+
+.selected-summary {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 16px;
+    color: var(--text-dark);
+    background: rgba(94, 64, 50, 0.1);
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .reservation-card {
+        padding: 40px 20px;
+    }
+
+    .booking-item {
+        flex: 0 0 100%;
+        width: 100%;
+        border-right: none !important;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .booking-group-wrapper {
+        flex-direction: column;
+    }
+
+    .booking-group-wrapper .d-flex {
+        flex-direction: column;
+    }
+
+    .steps-header {
+        gap: 15px;
+    }
+}
