@@ -20,23 +20,23 @@
     <div class="color-editor-panel">
         <h4><i class="fa-solid fa-palette"></i> Edit Theme</h4>
         <div class="color-group">
-            <label>Nền Web (#65432A)</label>
+            <label>Nền Web</label>
             <input type="color" id="pickerBgSection" value="#65432A">
         </div>
         <div class="color-group">
-            <label>Màu Chính (#5E4032)</label>
+            <label>Màu Chính</label>
             <input type="color" id="pickerPrimary" value="#5E4032">
         </div>
         <div class="color-group">
-            <label>Màu Nút/Chữ (#1A1A1A)</label>
+            <label>Màu Nút/Chữ</label>
             <input type="color" id="pickerTextDark" value="#1A1A1A">
         </div>
         <div class="color-group">
-            <label>Nền Card (#F7F4EF)</label>
+            <label>Nền Card</label>
             <input type="color" id="pickerBgCard" value="#F7F4EF">
         </div>
         <div class="color-group">
-            <label>Nền Input (#F2EFE9)</label>
+            <label>Nền Input</label>
             <input type="color" id="pickerBgInput" value="#F2EFE9">
         </div>
     </div>
@@ -77,8 +77,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-4">
-                                    <button type="button" onclick="goToStep(2)" class="btn-check-availability"
-                                        style="max-width: 400px; margin: 0 auto;">NEXT STEP</button>
+                                    <button type="button" onclick="goToStep2()" class="btn-check-availability" style="max-width: 400px; margin: 0 auto;">NEXT STEP</button>
                                 </div>
                             </div>
 
@@ -150,6 +149,31 @@
                                             placeholder="Special Request (Optional)"></textarea></div>
                                 </div>
 
+                                <div class="deposit-container mt-3">
+                                    <div class="deposit-header">
+                                        <span><i class="fa-solid fa-credit-card me-2"></i> Deposit Required</span>
+                                        <span class="deposit-amount" id="depositTotal">0 VND</span>
+                                    </div>
+                                    <div class="deposit-note">
+                                        Required deposit: <strong>$10 / reservation</strong> to secure your reservation.
+                                    </div>
+
+                                    <div class="payment-options mt-3">
+                                        <label class="payment-option">
+                                            <input type="radio" name="paymentMethod" value="bank">
+                                            <span class="payment-box">
+                                                <i class="fa-solid fa-building-columns me-2"></i> Bank Transfer
+                                            </span>
+                                        </label>
+                                        <label class="payment-option">
+                                            <input type="radio" name="paymentMethod" value="visa">
+                                            <span class="payment-box">
+                                                <i class="fa-brands fa-cc-visa me-2"></i> Visa/Master
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
                                 <div class="col-12 mt-3 text-start">
                                     <div class="d-flex align-items-start">
                                         <input type="checkbox" id="agreeTerms" class="custom-checkbox-input">
@@ -195,6 +219,21 @@
             </div>
         </div>
     </section>
+
+    <button id="toggleBranchModeBtn" title="Toggle Branch Mode" style="
+    position: fixed; 
+    bottom: 20px; 
+    left: 20px; 
+    z-index: 9999; 
+    width: 45px; 
+    height: 45px; 
+    border-radius: 50%; 
+    background: #5E4032; 
+    border: none; 
+    cursor: pointer; 
+    display: flex; 
+    transition: transform 0.2s;">
+    </button>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="script.js"></script>

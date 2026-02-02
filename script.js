@@ -1,53 +1,148 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // --- 1. XỬ LÝ ĐỔI MÀU (COLOR PICKER) ---
+    // ============================================================
+    // 1. KHÔI PHỤC TÍNH NĂNG ĐỔI MÀU (COLOR EDITOR)
+    // ============================================================
     const root = document.documentElement;
 
     function updateColor(variable, value) {
         root.style.setProperty(variable, value);
     }
 
-    // Update SVG arrow color in Select boxes dynamically
+    // Hàm phụ: Đổi màu mũi tên trong ô Select khi đổi màu chính
     function updateSelectArrowColor(hexColor) {
         const cleanHex = hexColor.replace('#', '');
         const svgUrl = `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23${cleanHex}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`;
 
-        const selects = document.querySelectorAll('select.booking-input-reset');
-        selects.forEach(sel => sel.style.backgroundImage = svgUrl);
-    }
-
-    // Event Listeners for Color Inputs
-    const pickerBgSection = document.getElementById('pickerBgSection');
-    if (pickerBgSection) pickerBgSection.addEventListener('input', e => updateColor('--bg-section', e.target.value));
-
-    const pickerBgCard = document.getElementById('pickerBgCard');
-    if (pickerBgCard) pickerBgCard.addEventListener('input', e => updateColor('--bg-card', e.target.value));
-
-    const pickerTextDark = document.getElementById('pickerTextDark');
-    if (pickerTextDark) pickerTextDark.addEventListener('input', e => updateColor('--text-dark', e.target.value));
-
-    const pickerBgInput = document.getElementById('pickerBgInput');
-    if (pickerBgInput) pickerBgInput.addEventListener('input', e => updateColor('--bg-input', e.target.value));
-
-    const pickerPrimary = document.getElementById('pickerPrimary');
-    if (pickerPrimary) {
-        pickerPrimary.addEventListener('input', e => {
-            updateColor('--primary', e.target.value);
-            updateSelectArrowColor(e.target.value);
+        document.querySelectorAll('select.booking-input-reset').forEach(sel => {
+            sel.style.backgroundImage = svgUrl;
         });
     }
 
+    // Lắng nghe sự kiện input từ các ô chọn màu
+    const pBgSection = document.getElementById('pickerBgSection');
+    if (pBgSection) pBgSection.addEventListener('input', e => updateColor('--bg-section', e.target.value));
 
-    // --- 2. LOGIC BOOKING FORM ---
+    const pPrimary = document.getElementById('pickerPrimary');
+    if (pPrimary) pPrimary.addEventListener('input', e => {
+        updateColor('--primary', e.target.value);
+        updateSelectArrowColor(e.target.value); // Cập nhật cả mũi tên
+    });
 
-    // Init Flatpickr
+    const pTextDark = document.getElementById('pickerTextDark');
+    if (pTextDark) pTextDark.addEventListener('input', e => updateColor('--text-dark', e.target.value));
+
+    const pBgCard = document.getElementById('pickerBgCard');
+    if (pBgCard) pBgCard.addEventListener('input', e => updateColor('--bg-card', e.target.value));
+
+    const pBgInput = document.getElementById('pickerBgInput');
+    if (pBgInput) pBgInput.addEventListener('input', e => updateColor('--bg-input', e.target.value));
+
+
+    // ============================================================
+    // 2. CẤU HÌNH & LUỒNG ĐẶT BÀN (BOOKING FLOW)
+    // ============================================================
+
+    let IS_SINGLE_BRANCH = false; // Mặc định là CÓ chọn chi nhánh (False)
+
+    function initReservationFlow() {
+        const step1Ind = document.getElementById('step1-indicator');
+        const step2Ind = document.getElementById('step2-indicator');
+        const step3Ind = document.getElementById('step3-indicator');
+
+        const step1Container = document.getElementById('step1-container');
+        const step2Container = document.getElementById('step2-container');
+        const step3Container = document.getElementById('step3-container');
+        const step4Container = document.getElementById('step4-container');
+
+        const backBtnStep2 = document.querySelector('#step2-container .back-link');
+
+        // Reset hiển thị: Ẩn hết các container
+        if (step1Container) step1Container.style.display = 'none';
+        if (step2Container) step2Container.style.display = 'none';
+        if (step3Container) step3Container.style.display = 'none';
+        if (step4Container) step4Container.style.display = 'none';
+
+        // Hiện lại tiêu đề chính
+        const mainTitle = document.querySelector('.reservation-title');
+        if (mainTitle) mainTitle.style.display = 'block';
+
+        // Reset trạng thái các vòng tròn (Indicators)
+        [step1Ind, step2Ind, step3Ind].forEach(el => {
+            if (el) {
+                el.classList.remove('active');
+                const circle = el.querySelector('.step-circle');
+                // Reset số và icon check
+                if (el.id === 'step1-indicator') circle.innerHTML = '1';
+                if (el.id === 'step2-indicator') circle.innerHTML = '2';
+                if (el.id === 'step3-indicator') circle.innerHTML = '3';
+            }
+        });
+
+        // --- XỬ LÝ LOGIC HIỂN THỊ THEO CHẾ ĐỘ ---
+        if (IS_SINGLE_BRANCH) {
+            // Chế độ 1 chi nhánh: Ẩn bước 1, bắt đầu từ bước 2
+            if (step1Ind) step1Ind.style.display = 'none';
+
+            // Biến Bước 2 thành Bước 1
+            if (step2Ind) {
+                step2Ind.querySelector('.step-circle').innerHTML = '1';
+                step2Ind.classList.add('active');
+            }
+            // Biến Bước 3 thành Bước 2
+            if (step3Ind) {
+                step3Ind.querySelector('.step-circle').innerHTML = '2';
+            }
+
+            // Hiển thị ngay Step 2 Container
+            if (step2Container) step2Container.style.display = 'block';
+
+            // Ẩn nút "Back to Location"
+            if (backBtnStep2) backBtnStep2.style.display = 'none';
+
+        } else {
+            // Chế độ nhiều chi nhánh (Mặc định)
+            if (step1Ind) {
+                step1Ind.style.display = 'flex';
+                step1Ind.classList.add('active');
+            }
+            if (step1Container) step1Container.style.display = 'block';
+
+            if (backBtnStep2) backBtnStep2.style.display = 'inline-block';
+        }
+    }
+
+    // Khởi chạy lần đầu
+    window.initReservationFlow = initReservationFlow;
+    initReservationFlow();
+
+    // --- XỬ LÝ NÚT TOGGLE (NÚT TRÒN) ---
+    const toggleBtn = document.getElementById('toggleBranchModeBtn');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function () {
+            IS_SINGLE_BRANCH = !IS_SINGLE_BRANCH;
+            this.style.transform = this.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+
+            // Reset lại Form và Luồng
+            const form = document.getElementById('bookingForm');
+            if (form) form.reset();
+            const timeContainer = document.getElementById('availableTimes');
+            if (timeContainer) timeContainer.innerHTML = '';
+
+            initReservationFlow();
+        });
+    }
+
+    // --- CÁC THÀNH PHẦN KHÁC (Datepicker, Selects) ---
     if (typeof flatpickr !== 'undefined') {
         flatpickr("#datePicker", {
-            dateFormat: "d M Y", defaultDate: "today", minDate: "today", disableMobile: "true"
+            dateFormat: "d M Y", defaultDate: "today", minDate: "today", disableMobile: "true", clickOpens: false,
+            onReady: function (selectedDates, dateStr, instance) {
+                instance.input.addEventListener("click", function () { instance.toggle(); });
+            }
         });
     }
 
-    // Init Time & People Options
     const timeSelect = document.getElementById('timePicker');
     if (timeSelect) {
         for (let h = 10; h <= 22; h++) {
@@ -61,146 +156,187 @@ document.addEventListener("DOMContentLoaded", function () {
         for (let i = 1; i <= 20; i++) {
             peopleSelect.add(new Option(i === 1 ? `${i} Person` : `${i} Persons`, i));
         }
-        peopleSelect.selectedIndex = 1;
+        peopleSelect.options[1].selected = true;
     }
 
-    // Navigation Functions
-    window.goToStep = function (step) {
-        document.querySelectorAll('[id$="-container"]').forEach(el => el.style.display = 'none');
-        const nextContainer = document.getElementById(`step${step}-container`);
-        if (nextContainer) nextContainer.style.display = 'block';
-
-        // Update Indicators
-        for (let i = 1; i <= 3; i++) {
-            const ind = document.getElementById(`step${i}-indicator`);
-            if (ind) {
-                const circle = ind.querySelector('.step-circle');
-                ind.classList.remove('active');
-                circle.innerHTML = i;
-
-                if (i < step) {
-                    circle.innerHTML = '<i class="fa-solid fa-check"></i>';
-                    ind.classList.add('active'); // Keep previous steps styled
-                }
-            }
-        }
-        const currentInd = document.getElementById(`step${step}-indicator`);
-        if (currentInd && step <= 3) currentInd.classList.add('active');
-
-        // Hide Title & Header on Success Step
-        // const title = document.querySelector('.reservation-title');
-        // const header = document.querySelector('.steps-header');
-
-        // if (step === 4) {
-        //     if (title) title.style.display = 'none';
-        //     if (header) header.style.display = 'none';
-        // } else {
-        //     if (title) title.style.display = 'block';
-        //     if (header) header.style.display = 'flex';
-        // }
-    };
-
-    // Check Availability
+    // --- NÚT CHECK AVAILABILITY ---
     const btnCheck = document.getElementById('btnCheck');
     const availableTimesContainer = document.getElementById('availableTimes');
-
-    // Các biến cần lấy để update thông tin (đảm bảo code bạn đã khai báo các biến này ở trên)
-    const datePicker = document.getElementById('datePicker');
+    const summaryText = document.getElementById('summaryText');
     const locSelect = document.getElementById('locationPicker');
     const occasionSelect = document.getElementById('occasionPicker');
-    const summaryText = document.getElementById('summaryText');
-    let IS_SINGLE_BRANCH = false; // Biến này nếu chưa có thì khai báo, hoặc lấy từ scope ngoài
+    const datePicker = document.getElementById('datePicker');
 
     if (btnCheck) {
         btnCheck.addEventListener('click', function (e) {
             e.preventDefault();
-
             const selectedVal = timeSelect.value;
-            if (!selectedVal) {
-                alert("Please select a time first");
-                return;
-            }
+            if (!selectedVal) { alert("Please select a time first"); return; }
 
-            // 1. Lấy giờ người dùng chọn (VD: 10:00 -> lấy số 10)
             const hour = parseInt(selectedVal.split(':')[0]);
 
-            // 2. Xóa nội dung cũ
             availableTimesContainer.innerHTML = '';
 
-            // 3. TẠO TIÊU ĐỀ BẰNG JS (Theo đúng logic code cũ)
+            // Tạo tiêu đề
             const header = document.createElement('div');
             header.className = 'w-100 text-center mb-2';
-            header.style.cssText = "font-family:'Bricolage Grotesque'; font-size:16px; color:#666; width: 100%;";
-            header.innerText = 'Select a time slot:';
+            header.style.cssText = "font-family:'Bricolage Grotesque'; font-size:15px; color:#666; width: 100%; margin-bottom: 10px;";
+            header.innerText = 'Select a specific time:';
             availableTimesContainer.appendChild(header);
 
-            // 4. Tạo mảng 5 mốc phút: 00, 15, 30, 45, 60
             const minutes = [0, 15, 30, 45, 60];
-
             minutes.forEach(min => {
                 let displayHour = hour;
                 let displayMin = min;
-
-                // Xử lý logic khi phút là 60 -> Tăng 1 giờ, phút về 0
-                if (min === 60) {
-                    displayHour = hour + 1;
-                    displayMin = 0;
-                }
-
-                // Format chuỗi giờ (VD: 10:00)
+                if (min === 60) { displayHour = hour + 1; displayMin = 0; }
                 const timeStr = `${displayHour}:${displayMin.toString().padStart(2, '0')}`;
 
-                // Tạo nút bấm
                 const btn = document.createElement('button');
                 btn.type = 'button';
-                btn.className = 'time-slot-btn'; // Class để CSS style
+                btn.className = 'time-slot-btn';
                 btn.innerText = timeStr;
 
-                // Sự kiện click vào nút giờ con
+                // Sự kiện khi bấm vào nút giờ con
                 btn.addEventListener('click', function () {
                     const selectedDate = datePicker.value;
                     const selectedPeople = peopleSelect.options[peopleSelect.selectedIndex].text;
-                    // Logic lấy tên chi nhánh
-                    const selectedLoc = (typeof IS_SINGLE_BRANCH !== 'undefined' && IS_SINGLE_BRANCH)
-                        ? 'Main Branch'
-                        : (locSelect ? locSelect.options[locSelect.selectedIndex].text : '');
+                    const selectedLoc = IS_SINGLE_BRANCH ? 'Our Restaurant' : (locSelect ? locSelect.options[locSelect.selectedIndex].text : '');
                     const selectedOccasion = occasionSelect.value;
 
-                    // Cập nhật text tóm tắt
+                    // --- TÍNH TIỀN CỌC CỐ ĐỊNH $10 ---
+                    const formattedDeposit = "$10";
+                    const depositEl = document.getElementById('depositTotal');
+                    if (depositEl) depositEl.innerText = formattedDeposit;
+
                     let summary = `Booking at ${selectedLoc} for ${selectedPeople} on ${selectedDate} at ${timeStr}`;
                     if (selectedOccasion) summary += ` (${selectedOccasion})`;
 
                     if (summaryText) summaryText.innerText = summary;
 
                     // Chuyển bước
-                    if (typeof window.goToStep === 'function') {
-                        window.goToStep(3); // Gọi hàm goToStep với tham số là 3
-                    }
+                    window.goToStep3();
                 });
-
                 availableTimesContainer.appendChild(btn);
             });
 
-            // 5. Hiển thị container dạng Flex (để khớp với CSS Flexbox)
             availableTimesContainer.style.display = 'flex';
-
-            // Cuộn xuống
             availableTimesContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         });
     }
 
-    // Complete Reservation
+    // --- HÀM CHUYỂN BƯỚC (NAVIGATION) ---
+
+    // Sang bước 2
+    window.goToStep2 = function () {
+        document.getElementById('step1-container').style.display = 'none';
+        document.getElementById('step2-container').style.display = 'block';
+
+        const i1 = document.getElementById('step1-indicator');
+        const i2 = document.getElementById('step2-indicator');
+
+        if (!IS_SINGLE_BRANCH && i1) {
+            i1.classList.remove('active');
+            i1.querySelector('.step-circle').innerHTML = '<i class="fa-solid fa-check"></i>';
+        }
+        if (i2) i2.classList.add('active');
+    }
+
+    // Sang bước 3
+    window.goToStep3 = function () {
+        document.getElementById('step2-container').style.display = 'none';
+        document.getElementById('step3-container').style.display = 'block';
+
+        const i2 = document.getElementById('step2-indicator');
+        const i3 = document.getElementById('step3-indicator');
+
+        if (i2) {
+            i2.classList.remove('active');
+            i2.querySelector('.step-circle').innerHTML = '<i class="fa-solid fa-check"></i>';
+        }
+        if (i3) i3.classList.add('active');
+
+        const card = document.querySelector('.reservation-card');
+        if (card) card.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Sang bước 4
+    window.goToStep4 = function () {
+        document.getElementById('step3-container').style.display = 'none';
+        document.getElementById('step4-container').style.display = 'block';
+
+        const i3 = document.getElementById('step3-indicator');
+        if (i3) {
+            i3.classList.remove('active');
+            i3.querySelector('.step-circle').innerHTML = '<i class="fa-solid fa-check"></i>';
+        }
+        const mainTitle = document.querySelector('.reservation-title');
+        if (mainTitle) mainTitle.style.display = 'none';
+    }
+
+    // Quay lại
+    window.goBackToStep1 = function () {
+        if (IS_SINGLE_BRANCH) return;
+        document.getElementById('step2-container').style.display = 'none';
+        document.getElementById('step1-container').style.display = 'block';
+
+        const i1 = document.getElementById('step1-indicator');
+        const i2 = document.getElementById('step2-indicator');
+        if (i1) { i1.classList.add('active'); i1.querySelector('.step-circle').innerHTML = '1'; }
+        if (i2) { i2.classList.remove('active'); i2.querySelector('.step-circle').innerHTML = '2'; }
+    }
+
+    window.goBackToStep2 = function () {
+        document.getElementById('step3-container').style.display = 'none';
+        document.getElementById('step2-container').style.display = 'block';
+
+        const i2 = document.getElementById('step2-indicator');
+        const i3 = document.getElementById('step3-indicator');
+
+        if (i2) {
+            i2.classList.add('active');
+            i2.querySelector('.step-circle').innerHTML = IS_SINGLE_BRANCH ? '1' : '2';
+        }
+        if (i3) {
+            i3.classList.remove('active');
+            i3.querySelector('.step-circle').innerHTML = IS_SINGLE_BRANCH ? '2' : '3';
+        }
+    }
+
+    // Hoàn thành & Reset
     const btnComplete = document.getElementById('btnComplete');
     if (btnComplete) {
         btnComplete.addEventListener('click', function () {
-            const name = document.getElementById('inputFName').value;
-            const terms = document.getElementById('agreeTerms').checked;
+            // 1. Lấy thông tin cơ bản
+            const fname = document.getElementById('inputFName').value.trim();
+            const phone = document.getElementById('inputPhone').value.trim();
+            const termsCheckbox = document.getElementById('agreeTerms');
 
-            if (!name) { alert("Please enter First Name"); return; }
-            if (!terms) { alert("Please agree to Terms"); return; }
+            // 2. Lấy thông tin thanh toán (Kiểm tra xem có ô nào đang được check không)
+            const selectedPayment = document.querySelector('input[name="paymentMethod"]:checked');
 
-            document.getElementById('successName').innerText = name;
-            goToStep(4);
+            // 3. Validate (Kiểm tra dữ liệu)
+            if (!fname || !phone) {
+                alert("Please fill in your Name and Phone Number.");
+                return;
+            }
+
+            // --- BẮT BUỘC CHỌN PHƯƠNG THỨC THANH TOÁN ---
+            if (!selectedPayment) {
+                alert("Please select a Payment Method for the deposit.");
+                return; // Dừng lại, không cho qua
+            }
+            // ---------------------------------------------
+
+            if (termsCheckbox && !termsCheckbox.checked) {
+                alert("Please agree to the Terms of Use.");
+                return;
+            }
+
+            // 4. Nếu đủ hết thì chuyển sang bước Success
+            const successNameSpan = document.getElementById('successName');
+            if (successNameSpan) successNameSpan.innerText = fname;
+
+            window.goToStep4();
         });
     }
 });
