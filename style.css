@@ -379,80 +379,131 @@ select.booking-input-reset {
     margin-bottom: 20px;
 }
 
-.deposit-container {
-    background-color: #fff;
-    border: 1px solid var(--primary); /* Viền màu nâu chủ đạo */
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 15px rgba(94, 64, 50, 0.1);
-}
-
-.deposit-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: 'Cinzel', serif;
-    font-size: 16px;
+.payment-header {
+    font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 700;
-    color: var(--primary);
-    margin-bottom: 5px;
-    border-bottom: 1px dashed #ddd;
-    padding-bottom: 10px;
-}
-
-.deposit-amount {
     font-size: 20px;
-    color: #d32f2f; /* Màu đỏ cho số tiền nổi bật */
-}
-
-.deposit-note {
-    font-size: 13px;
-    color: #666;
+    color: #000;
     margin-bottom: 15px;
-    font-style: italic;
 }
 
-/* Các nút chọn phương thức thanh toán */
-.payment-options {
-    display: flex;
-    gap: 10px;
-}
-
-.payment-option {
-    flex: 1;
-    cursor: pointer;
-}
-
-.payment-option input {
-    display: none; /* Ẩn nút radio mặc định */
-}
-
+/* Khung bao quanh các lựa chọn */
 .payment-box {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 20px;
+    background-color: #fff;
+}
+
+/* Radio Button */
+.custom-radio-label {
     display: flex;
     align-items: center;
-    justify-content: center;
-    height: 45px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    background-color: var(--bg-input);
-    font-size: 14px;
-    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+}
+
+.custom-radio-label input {
+    display: none;
+}
+
+.radio-mark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    margin-right: 10px;
+    position: relative;
     transition: all 0.2s;
+}
+
+/* Khi chọn: Viền nâu, chấm nâu ở giữa */
+.custom-radio-label input:checked + .radio-mark {
+    border-color: #8B5E3C; 
+}
+
+.custom-radio-label input:checked + .radio-mark::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background-color: #8B5E3C;
+    border-radius: 50%;
+}
+
+.label-text {
+    font-weight: 700;
+    font-size: 15px;
     color: #333;
 }
 
-/* Hiệu ứng khi chọn */
-.payment-option input:checked + .payment-box {
-    background-color: var(--primary);
+/* Icon thẻ nhỏ góc phải */
+.card-badge {
+    border: 1px solid #eee;
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-left: 5px;
+    font-size: 14px;
+    background: #fff;
+}
+
+/* Ô nhập thẻ kết hợp (Combined Input) */
+.combined-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px 12px;
+    background-color: #fff;
+    transition: border-color 0.3s;
+}
+
+.combined-input:focus-within {
+    border-color: #8B5E3C;
+    box-shadow: 0 0 0 1px rgba(139, 94, 60, 0.2);
+}
+
+.input-icon {
+    color: #aaa;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.input-reset {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    color: #333;
+    font-family: 'Bricolage Grotesque', sans-serif;
+}
+
+.input-reset::placeholder {
+    color: #aaa;
+}
+
+/* Nút Place Order to, màu nâu */
+.btn-place-order {
+    width: 100%;
+    background-color: #8B5E3C; /* Màu nâu giống ảnh */
     color: #fff;
-    border-color: var(--primary);
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: background 0.2s;
 }
 
-.payment-option:hover .payment-box {
-    border-color: var(--primary);
+.btn-place-order:hover {
+    background-color: #6d482d;
 }
-
 /* Responsive */
 @media (max-width: 768px) {
     .reservation-card {

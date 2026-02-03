@@ -308,23 +308,19 @@ document.addEventListener("DOMContentLoaded", function () {
             window.goToStep4();
         });
     }
+    if(document.querySelector('input[name="paymentMethod"]')) {
+        togglePaymentDetails();
+    }
 });
 
-// ============================================================
-// FIX LỖI NAVIGATION (QUAN TRỌNG)
-// Hàm này điều hướng đúng cho cả nút Next và Back
-// ============================================================
 window.goToStep = function(step) {
     if (step === 1) {
-        // Nút Back ở Step 2 gọi goToStep(1)
         window.goBackToStep1();
     } else if (step === 2) {
-        // Nếu đang ở Step 3 mà nhấn Back (về 2)
         const step3 = document.getElementById('step3-container');
         if (step3 && step3.style.display === 'block') {
             window.goBackToStep2();
         } else {
-            // Nếu đang ở Step 1 mà nhấn Next (lên 2)
             window.goToStep2();
         }
     } else if (step === 3) {
@@ -333,3 +329,17 @@ window.goToStep = function(step) {
         window.goToStep4();
     }
 };
+
+function togglePaymentDetails() {
+    const cardContainer = document.getElementById('cardDetails');
+    // Tìm input nào đang được check
+    const checkedInput = document.querySelector('input[name="paymentMethod"]:checked');
+    
+    // Nếu chưa chọn gì, hoặc chọn cái khác Card -> Ẩn
+    if (!checkedInput || checkedInput.value !== 'card') {
+        if(cardContainer) cardContainer.style.display = 'none';
+    } else {
+        // Nếu chọn Card -> Hiện
+        if(cardContainer) cardContainer.style.display = 'block';
+    }
+}
