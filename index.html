@@ -16,7 +16,11 @@
 </head>
 
 <body>
-
+    <div class="top-nav-login">
+        <button type="button" class="btn-login-custom">
+            <i class="fa-regular fa-user me-2"></i> <span class="d-none d-md-inline">Login</span>
+        </button>
+    </div>
     <div class="color-editor-panel">
         <h4><i class="fa-solid fa-palette"></i> Edit Theme</h4>
         <div class="color-group">
@@ -157,7 +161,8 @@
                                         <div class="payment-option">
                                             <div class="d-flex align-items-center justify-content-between">
                                                 <label class="custom-radio-label">
-                                                    <input type="radio" name="paymentMethod" value="card" onchange="togglePaymentDetails()">
+                                                    <input type="radio" name="paymentMethod" value="card"
+                                                        onchange="togglePaymentDetails()">
                                                     <span class="radio-mark"></span>
                                                     <span class="label-text">Card</span>
                                                 </label>
