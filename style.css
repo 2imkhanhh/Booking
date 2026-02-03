@@ -1,16 +1,10 @@
 :root {
-    --bg-section: #65432A;
-    /* Màu nền to (Background) */
-    --bg-card: #F7F4EF;
-    /* Màu nền thẻ (Card) */
-    --primary: #5E4032;
-    /* Màu chủ đạo (Icon, Hover, Active Step) */
-    --text-dark: #1A1A1A;
-    /* Màu chữ đậm / Nút bấm */
-    --bg-input: #F2EFE9;
-    /* Màu nền input */
-    --border-color: #8C8C8C;
-    /* Màu viền */
+    --bg-section: #FFFFFF;    /* Nền Web: Trắng tinh */
+    --bg-card: #FFFFFF;       /* Nền Card: Trắng tinh */
+    --primary: #000000;       /* Màu Chính (Icon/Hover): Đen */
+    --text-dark: #000000;     /* Chữ đậm/Nút bấm: Đen */
+    --bg-input: #FFFFFF;      /* Nền Input: Trắng */
+    --border-color: #000000;  /* Viền: Đen (để nổi bật trên nền trắng) */
 }
 
 body {
@@ -482,26 +476,6 @@ select.booking-input-reset {
     color: #aaa;
 }
 
-/* Nút Place Order to, màu nâu */
-.btn-place-order {
-    width: 100%;
-    background-color: #8B5E3C; /* Màu nâu giống ảnh */
-    color: #fff;
-    font-family: 'Bricolage Grotesque', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    padding: 15px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    transition: background 0.2s;
-}
-
-.btn-place-order:hover {
-    background-color: #6d482d;
-}
-
 .top-nav-login {
     position: absolute;
     top: 30px;
@@ -510,11 +484,13 @@ select.booking-input-reset {
 }
 
 .btn-login-custom {
-    background-color: rgba(247, 244, 239, 0.15); 
-    color: #F7F4EF; 
-    border: 1px solid rgba(247, 244, 239, 0.4); 
-    padding: 10px 20px;
-    border-radius: 30px; 
+    /* Đổi nền thành màu đen (theo biến --text-dark) để nổi trên nền trắng */
+    background-color: var(--text-dark); 
+    color: #ffffff; /* Chữ màu trắng */
+    
+    border: none;
+    padding: 10px 25px; /* Tăng chiều ngang chút cho đẹp */
+    border-radius: 30px;
     font-family: 'Bricolage Grotesque', sans-serif;
     font-weight: 600;
     font-size: 14px;
@@ -522,14 +498,15 @@ select.booking-input-reset {
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
-    backdrop-filter: blur(5px); 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Thêm bóng nhẹ */
 }
 
+/* Hiệu ứng khi di chuột vào */
 .btn-login-custom:hover {
-    background-color: #F7F4EF; 
-    color: #5E4032; 
+    background-color: var(--primary); /* Đổi sang màu nâu chủ đạo (nếu có chỉnh) hoặc giữ đen */
+    opacity: 0.9;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
 }
 /* Responsive */
 @media (max-width: 768px) {
